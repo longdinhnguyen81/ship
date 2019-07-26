@@ -1,0 +1,16 @@
+@media(max-width: 992px){
+	.trg-flight-section-airline-logo{
+		display: none !important;
+	}
+	.trg-flight-section-airline-title{
+		text-align: center;
+		opacity: 1;
+		color: red;
+	}
+}
+.btn-booking{
+	background: linear-gradient(150deg, #97c74e 0%, #2ab9a5 100%);
+}
+td.bookex{
+	font-size: 18px !important;
+}
