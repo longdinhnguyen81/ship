@@ -1,5 +1,32 @@
 @extends('templates.admin.master')
 @section('content')
+<style type="text/css">
+    input[type="file"] {
+      display: block;
+    }
+    .imageThumb {
+      max-height: 75px;
+      border: 2px solid;
+      padding: 1px;
+      cursor: pointer;
+    }
+    .pip {
+      display: inline-block;
+      margin: 10px 10px 0 0;
+    }
+    .remove {
+      display: block;
+      background: #444;
+      border: 1px solid black;
+      color: white;
+      text-align: center;
+      cursor: pointer;
+    }
+    .remove:hover {
+      background: white;
+      color: black;
+    }
+</style>
     <div class="breadcome-area">
                 <div class="container-fluid">
                     <div class="row">
@@ -62,6 +89,16 @@
                                                     <div class="form-group-inner">
                                                         <div class="row">
                                                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                                <label class="login2 pull-right pull-right-pro">Giá</label>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                                                <input type="number" class="form-control" name="cost" value="{{ $hotel->cost }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group-inner">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                                                 <label class="login2 pull-right pull-right-pro">Keywords</label>
                                                             </div>
                                                             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
@@ -111,6 +148,24 @@
                                                     <div class="form-group-inner">
                                                         <div class="row">
                                                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                                <label class="login2 pull-right pull-right-pro">Album ảnh</label>
+                                                            </div>
+                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                                                                <div class="field" align="left">
+                                                                  <input type="file" id="files" name="files[]" multiple />
+                                                                  @foreach($pictures as $picture)
+                                                                    <div class="pip" id="result-{{$picture->id}}">
+                                                                        <img class="imageThumb" width="100px" src="/upload/{{ $picture->url }}"><br>
+                                                                        <a onclick="return removePicture({{ $picture->id }})" class="remove">Remove image</a>
+                                                                    </div>
+                                                                @endforeach
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                        </div>
+                                                    <div class="form-group-inner">
+                                                        <div class="row">
+                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                                             </div>
                                                             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                                                 <input type="submit" class="btn btn-primary" value="Sửa" />
@@ -128,4 +183,61 @@
                 </div>
             </div>
         </div>
+<script src="/templates/admin/js/jquery.min.js"></script> 
+  <script type="text/javascript">
+    $(document).ready(function() {
+      if (window.File && window.FileList && window.FileReader) {
+        $("#files").on("change", function(e) {
+          var files = e.target.files,
+            filesLength = files.length;
+          for (var i = 0; i < filesLength; i++) {
+            var f = files[i]
+            var fileReader = new FileReader();
+            fileReader.onload = (function(e) {
+              var file = e.target;
+              $("<span class=\"pip\">" +
+                "<img class=\"imageThumb\" width='100px' src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
+                "<br/><span class=\"remove\">Remove image</span>" +
+                "</span>").insertAfter("#files");
+              $(".remove").click(function(){
+                $(this).parent(".pip").remove();
+              });
+              
+              // Old code here
+              /*$("<img></img>", {
+                class: "imageThumb",
+                src: e.target.result,
+                title: file.name + " | Click to remove"
+              }).insertAfter("#files").click(function(){$(this).remove();});*/
+              
+            });
+            fileReader.readAsDataURL(f);
+          }
+        });
+      } else {
+        alert("Your browser doesn't support to File API")
+      }
+    });
+</script>
+
+<script type="text/javascript">
+    function removePicture(id){
+        $.ajax({
+          url: "{{ route('ajax.admin.picture') }}",
+          type: 'GET',
+          cache: false,
+          data: {
+                id: id,
+            },
+          success: function(data){
+            console.log('success')
+            $('#result-'+id).html(data);
+          }, 
+          error: function() {
+           alert("Có lỗi");
+         }
+       }); 
+        return false;
+      }
+</script>
 @stop

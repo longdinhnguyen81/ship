@@ -8,12 +8,12 @@
   <div class="container">
     <div class="row all-text-white">
       <div class="col-md-12 align-self-center">
-        <h1 class="innerpage-title">Đặt vé thành công</h1>
-        <h6 class="subtitle">Xác nhận đặt vé thành công từ hệ thống, hãy kiểm tra gmail để xem chi tiết.</h6>
+        <h1 class="innerpage-title">Đặt phòng thành công</h1>
+        <h6 class="subtitle">Xác nhận đặt phòng thành công từ hệ thống.</h6>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item active"><a href="/"><i class="ti-home"></i> Trang chủ</a></li>
-            <li class="breadcrumb-item">Đặt vé thành công</li>
+            <li class="breadcrumb-item">Đặt phòng thành công</li>
           </ol>
         </nav>
       </div>
@@ -23,8 +23,8 @@
 <!-- =======================
 	Banner innerpage -->
 @php
-  $checkout = Session::get('checkout');
-  $carts = Session::get('cart');
+  $checkhotel = Session::get('checkhotel');
+  $hotels = Session::get('hotel');
 @endphp
 <section class="pt80 pb60 booking-section login-area thanksYou">
   <div class="container">
@@ -35,58 +35,55 @@
             <div class="login-box Booking-box">
               <div class="login-top">
                 <h2 class="h2">Kiểm tra thông tin đơn hàng</h2>
-                <p>Đơn hàng của bạn sẽ được gửi qua email.</p>
               </div>         
               <table class="table table-striped">
                 <tbody>
                   <tr>
                     <td colspan="2" class="bookex">Hóa đơn số:</td>
-                    <td colspan="2" >#TAULYSON{{ $checkout['id'] }}</td>
+                    <td colspan="2" >#HOTEL{{ $checkhotel['id'] }}</td>
                   </tr>
                   <tr>
                     <td colspan="2"  class="bookex">Họ và tên:</td>
-                    <td colspan="2" >{{ $checkout['fullname'] }}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2"  class="bookex">Địa chỉ email:</td>
-                    <td colspan="2" >{{ $checkout['email'] }}</td>
+                    <td colspan="2" >{{ $checkhotel['username'] }}</td>
                   </tr>
                   <tr>
                     <td colspan="2"  class="bookex">Số điện thoại:</td>
-                    <td colspan="2" >{{ $checkout['phone'] }}</td>
+                    <td colspan="2" >{{ $checkhotel['phone'] }}</td>
                   </tr>
                   <tr>
-                    <td colspan="2"  class="bookex">Hình thức thanh toán:</td>
-                    <td colspan="2" >{{ $checkout['type'] }}</td>
+                    <td colspan="2"  class="bookex">Ngày đặt:</td>
+                    <td colspan="2" >{{ $checkhotel['date'] }}</td>
                   </tr>
                    <tr>
-                    <td class="bookex font-weight-bold color-black" colspan="2">Các vé tàu đã đặt:</td>
+                    <td class="bookex font-weight-bold color-black" colspan="2">Các phòng đã đặt:</td>
                   </tr>                 
                   <hr />
                    <tr>
-                    <td class="bookex">Tên tàu:</td>
-                    <td class="bookex">Số vé:</td>
-                    <td class="bookex">Chiều đi:</td>
-                    <td class="bookex">Giá tiền:</td>
+                    <td class="bookex">Khách sạn:</td>
+                    <td class="bookex">Loại phòng:</td>
+                    <td class="bookex">Loại giường:</td>
+                    <td class="bookex">Giá tiền/ngày:</td>
+                    <td class="bookex">Ngày đặt:</td>
                   </tr>             
                   @php
                     $all = 0;
                   @endphp
-                  @foreach($carts as $cart)
+                  @foreach($hotels as $hotel)
                   @php
-                    $all += $cart['ticket']*$cart['cost'];
+                    $all += $hotel['count']*$hotel['cost'];
                   @endphp
                   <tr>
-                    <td>{{ $cart['name'] }}</td>
-                    <td>{{ $cart['ticket'] }}</td>
-                    <td> {{ $cart['train_from'] }} - {{ $cart['train_to'] }}</td>
-                    <td> {{ number_format($cart['ticket']*$cart['cost'],0,',','.') }} VND</td>
+                    <td>{{ $hotel['hotel'] }}</td>
+                    <td>{{ $hotel['name'] }}</td>
+                    <td>{{ $hotel['type'] }}</td>
+                    <td> {{ number_format($hotel['cost'],0,',','.') }} VND</td>
+                    <td> {{ $hotel['count'] }}</td>
                   </tr>                  
                   @endforeach     
                   
                   <tr>
                     <td class="bookex font-weight-bold color-black text-center" colspan="3">Tổng tiền</td>
-                    <td>{{ number_format($all, 0, ',', '.') }} VND</td>
+                    <td colspan="2">{{ number_format($all, 0, ',', '.') }} VND</td>
                   </tr>
                   
                 </tbody>
@@ -107,7 +104,7 @@
                             <p><strong>Số tài khoản</strong> 1001000289446</p>
                             <p><strong>Tên chủ tài khoản:</strong> Lê Hồng Phong</p>
                             <p><strong>Chi nhánh:</strong> Ngũ Hành Sơn - Đà Nẵng</p>
-                            <p><strong>Ghi chú:</strong> #TAULYSON{{ $checkout['id'] }}</p>
+                            <p><strong>Ghi chú:</strong> #HOTEL{{ $checkhotel['id'] }}</p>
                           </div>
                         </div>
                       </div>
@@ -119,7 +116,7 @@
                             <p>Ví điện tử MOMO</p>
                             <p><strong>Số điện thoại:</strong> 032.8811.678</p>
                             <p><strong>Tên chủ tài khoản:</strong> Lê Hồng Phong</p>
-                            <p><strong>Ghi chú:</strong> #TAULYSON{{ $checkout['id'] }}</p>
+                            <p><strong>Ghi chú:</strong> #HOTEL{{ $checkhotel['id'] }}</p>
                           </div>
                         </div>
                       </div>
@@ -149,7 +146,7 @@
   </div>
 </section>
 @php
-  Session::forget('cart');
-  Session::forget('checkout');
+  Session::forget('hotel');
+  Session::forget('checkhotel');
 @endphp
 @stop

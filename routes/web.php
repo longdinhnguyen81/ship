@@ -14,6 +14,7 @@
 Route::pattern('id','([0-9]*)');
 Route::pattern('cid','([0-9]*)');
 Route::pattern('slug','(.*)');
+Route::pattern('name','(.*)');
 
 
 Route::namespace('Ship')->group(function(){
@@ -25,29 +26,45 @@ Route::namespace('Ship')->group(function(){
 		'uses' => 'IndexController@about',
 		'as' => 'ship.index.about'
 	]);
-	Route::get('tin-tuc/{slug}', [
+	Route::get('tin-tuc', [
 		'uses' => 'BlogController@index',
 		'as' => 'ship.blog.index'
+	]);
+	Route::get('tin-tuc/{slug}', [
+		'uses' => 'BlogController@blog',
+		'as' => 'ship.blog.blog'
+	]);
+	Route::get('tim-kiem', [
+		'uses' => 'BlogController@search',
+		'as' => 'ship.blog.search'
 	]);
 	Route::get('{slug}-{id}.html', [
 		'uses' => 'BlogController@detail',
 		'as' => 'ship.blog.detail'
-	]);
-	Route::get('tin-tuc/{slug}', [
-		'uses' => 'BlogController@index',
-		'as' => 'ship.blog.index'
 	]);
 	Route::get('dat-ve-tau-{slug}', [
 		'uses' => 'ShipController@index',
 		'as' => 'ship.ship.index'
 	]);
 	Route::get('gio-hang', [
+		'uses' => 'ShipController@getCart',
+		'as' => 'ship.ship.cart'
+	]);
+	Route::post('gio-hang', [
 		'uses' => 'ShipController@cart',
 		'as' => 'ship.ship.cart'
+	]);
+	Route::post('update-cart', [
+		'uses' => 'ShipController@updateCart',
+		'as' => 'ship.ship.updateCart'
 	]);
 	Route::get('dat-ve-thanh-cong', [
 		'uses' => 'ShipController@thank',
 		'as' => 'ship.ship.thank'
+	]);
+	Route::post('thanh-toan', [
+		'uses' => 'ShipController@payment',
+		'as' => 'ship.ship.payment'
 	]);
 	Route::get('thue-xe', [
 		'uses' => 'CarController@index',
@@ -61,9 +78,21 @@ Route::namespace('Ship')->group(function(){
 		'uses' => 'HotelController@index',
 		'as' => 'ship.hotel.index'
 	]);
+	Route::post('dat-phong-khach-san', [
+		'uses' => 'HotelController@checkout',
+		'as' => 'ship.hotel.checkout'
+	]);
+	Route::get('cart-{name}', [
+		'uses' => 'HotelController@cart',
+		'as' => 'ship.hotel.cart'
+	]);
 	Route::get('khach-san/{slug}', [
 		'uses' => 'HotelController@detail',
 		'as' => 'ship.hotel.detail'
+	]);
+	Route::get('dat-phong-thanh-cong', [
+		'uses' => 'HotelController@thank',
+		'as' => 'ship.hotel.thank'
 	]);
 });
 Route::namespace('Auth')->group(function(){
@@ -97,6 +126,18 @@ Route::namespace('Ajax')->group(function(){
 	Route::get('activeClient', [
 		'uses' => 'AdminController@activeClient',
 		'as' => 'ajax.admin.client'
+	]);
+	Route::get('deletePicture', [
+		'uses' => 'AdminController@picture',
+		'as' => 'ajax.admin.picture'
+	]);
+	Route::get('deleteTicket', [
+		'uses' => 'ShipController@delete',
+		'as' => 'ajax.ship.delete'
+	]);
+	Route::get('deleteHotel', [
+		'uses' => 'ShipController@deleteHotel',
+		'as' => 'ajax.ship.deleteHotel'
 	]);
 });
 
@@ -209,6 +250,26 @@ Route::namespace('Admin')->middleware('auth')->group(function(){
 				'uses' => 'HotelController@delete',
 				'as' => 'admin.hotel.delete'
 			]);
+				Route::get('{id}/add', [
+					'uses' => 'TypeController@getAdd',
+					'as' => 'admin.type.add'
+				]);
+				Route::post('{id}/add', [
+					'uses' => 'TypeController@postAdd',
+					'as' => 'admin.type.add'
+				]);
+				Route::get('{id}/edit/{cid}', [
+					'uses' => 'TypeController@getEdit',
+					'as' => 'admin.type.edit'
+				]);
+				Route::post('{id}/edit/{cid}', [
+					'uses' => 'TypeController@postEdit',
+					'as' => 'admin.type.edit'
+				]);
+				Route::get('{id}/delete/{cid}', [
+					'uses' => 'TypeController@delete',
+					'as' => 'admin.type.delete'
+				]);
 		});
 
 		Route::prefix('category')->group(function(){

@@ -12,7 +12,8 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item active"><a href="/"><i class="ti-home"></i> Trang chủ</a></li>
-            <li class="breadcrumb-item">Tin tức</li>
+            <li class="breadcrumb-item active"><a href="{{ route('ship.blog.index') }}"><i class="ti-home"></i> Tin tức</a></li>
+            <li class="breadcrumb-item">{{ $blogs->name }}</li>
           </ol>
         </nav>
       </div>
@@ -28,7 +29,7 @@
       <div class="col-lg-8 col-md-12 col-xs-12">
         <div class="row"> 
           <!-- blog item-->
-          @foreach($blogs as $blog)
+          @foreach($blogs->detail as $blog)
           <div class="col-lg-6 col-sm-6 mb-4">
             <div class="card shadow border-0 h-100"><a href="{{ route('ship.blog.detail', ['slug' => str_slug($blog->title), 'id' => $blog->id]) }}"><img src="/upload/{{ $blog->picture }}" alt="{{ $blog->title }}" class="img-fluid card-img-top img-cover"></a>
               <div class="card-body">
@@ -42,15 +43,6 @@
         </div>
       </div>
       @include('templates.ship.leftbar')
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            {{ $blogs->links() }}
-          </ul>
-        </nav>
-      </div>
     </div>
   </div>
 </section>

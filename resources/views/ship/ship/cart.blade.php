@@ -1,6 +1,5 @@
 @extends('templates.ship.master')
 @section('content')
-	
 <!-- =======================
 	Banner innerpage -->
 <div class="innerpage-banner left bg-overlay-dark-7 py-7" style="background:url(/templates/ship/images/07.jpg) repeat; background-size:cover;">
@@ -32,37 +31,51 @@
               <h2>1. Kiểm tra hóa đơn cần thanh toán</h2>
               <p>Hãy kiểm tra hoa đơn bạn cần phải thanh toán cho đặt vé tàu đi du lịch tại đảo Lý Sơn</p>
               <div class="table-responsive-sm pt30">
+                <form method="post" action="{{ route('ship.ship.updateCart') }}">
+                  {{ csrf_field() }}
                 <table class="table table-lg table-noborder table-striped">
                   <thead class="all-text-white bg-grad">
                     <tr>
                       <th scope="col">Vé tàu</th>
                       <th scope="col">Số vé</th>
                       <th scope="col">Giá tiền</th>
+                      <th scope="col">Chức năng</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td><span style="font-size:18px;font-weight:600">Sa Kỳ - Lý Sơn</span><br>Đi 14h 19/07/2019</td>
-                      <td>2</td>
-                      <td>3,000,000</td>
-                    </tr>
-                    <tr>
-                      <td><span style="font-size:18px;font-weight:600">Sa Kỳ - Lý Sơn</span><br>Đi 14h 19/07/2019</td>
-                      <td>5</td>
-                      <td>3,000,000</td>
-                    </tr>
+                    @php
+                      $ticket = 0;
+                      $payment = 0;
+                    @endphp
+                    @foreach(Session::get('cart') as $carts)
+                    @php
+                      $payment += $carts['cost']*$carts['ticket'];
+                      $ticket += $carts['ticket'];
+                    @endphp
+                      <tr id="cart-{{ $carts['id'] }}">
+                        <td><span style="font-size:18px;font-weight:600">{{ $carts['train_from'] }} - {{ $carts['train_to'] }}</span><br>Đi {{ $carts['time'] }} {{ $carts['date'] }}</td>
+                        <td>
+                            <input onchange="changeCost({{ $carts['id'] }},{{ $carts['cost'] }}, {{ $carts['ticket'] }})" id="ticket-{{ $carts['id'] }}" type="number" name="ticket-{{ $carts['id'] }}" value="{{ $carts['ticket'] }}" />
+                        </td>
+                        <td id="demo-{{ $carts['id'] }}">{{ number_format($carts['cost']*$carts['ticket'], 0, ',', '.'). ' VND' }}</td>
+                        <td><button type="submit" onclick="deleteTicket({{ $carts['id'] }})" class="btn btn-danger">Xóa</button></td>
+                      </tr>
+                    @endforeach
                     <tr>
                       <td><span style="font-size:18px;font-weight:600">Tổng cộng</span></td>
-                      <td><span style="font-size:18px;font-weight:600">7</td>
-                      <td><span style="font-size:18px;font-weight:600">6,000,000đ</td>
+                      <td><span style="font-size:18px;font-weight:600">{{ $ticket }}</td>
+                      <td colspan="2"><span style="font-size:18px;font-weight:600">{{ number_format($payment, 0, ',', '.') }} VND</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3">
+                        <button type="submit" class="bg-grad trip-button-book" style="float: left">Cập nhật</button>
+                        <a href="/" class="bg-grad trip-button-book" style="float: right">Mua thêm vé</a>
+                      </td>
                     </tr>
                   </tbody>
+                  </form>
                 </table>
-              </div>
-              <div class="pt30">
-                <h5><span style="float:left">Quanh lại giỏ hàng</span><span style="float:right">Mua thêm vé</span></h5>
-              </div>
-            </div>
+              </div>            </div>
           </div>
           <div class="col-lg-12 col-md-12 col-sm-12 pt30">
             <div class="login-box Booking-box">
@@ -70,7 +83,17 @@
                 <h2>2. Điền thông tin thanh toán</h2>
                 <p>Hãy nhập đầy đủ thông tin của bạn.</p>
               </div>
-              <form class="login-form" action="#">
+          @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+          @endif
+              <form class="login-form" action="{{ route('ship.ship.payment') }}" method="post" id="infomation">
+                {{ csrf_field() }}
                 <div class="row">
                   <div class="col-lg-6 col-md-12 col-sm-12 email">
                     <label>Họ và tên</label>
@@ -86,13 +109,13 @@
                   </div>
                   <div class="col-lg-6 col-md-12 col-sm-12 password">
                     <label>Số điện thoại</label>
-                    <input type="text" name="text" placeholder="Nhập số điện thoại">
+                    <input type="number" name="phone" placeholder="Nhập số điện thoại">
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12 email">
                     <label>Hình thức thanh toán</label>
-                    <select class="custom-select select-big mb-3">
-                      <option value="location3">Chuyển khoản ngân hàng</option>
-                      <option value="location5">Chuyển khoản momo</option>
+                    <select class="custom-select select-big mb-3" name="type">
+                      <option value="Chuyển khoản ngân hàng">Chuyển khoản ngân hàng</option>
+                      <option value="Chuyển khoản momo">Chuyển khoản momo</option>
                     </select>
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
@@ -101,14 +124,23 @@
                       <div class="accordion-item">
                         <div class="accordion-title"> <a class="h6 mb-0" data-toggle="collapse" href="#collapse-1">Chuyển khoản ngân hàng</a> </div>
                         <div class="collapse show" id="collapse-1" data-parent="#accordion1">
-                          <div class="accordion-content">Duis aliquam hendrerit risus, sed mollis nulla luctus sit amet. Sed et magna efficitur, viverra nisl nec, rhoncus nisi. Duis nec vehicula felis. Aenean turpis lectus, cursus ac sem vel, consequat scelerisque ipsum. Donec non interdum lorem. Nulla facilisi. Fusce iaculis ex sed nulla commodo imperdiet. Proin sed rhoncus ligula, sit amet euismod augue. </div>
+                          <div class="accordion-content">
+                            <p>Ngân hàng Vietcombank</p>
+                            <p><strong>Số tài khoản</strong> 1001000289446</p>
+                            <p><strong>Tên chủ tài khoản:</strong> Lê Hồng Phong</p>
+                            <p><strong>Chi nhánh:</strong> Ngũ Hành Sơn - Đà Nẵng</p>
+                          </div>
                         </div>
                       </div>
                       <!-- item -->
                       <div class="accordion-item">
-                        <div class="accordion-title"> <a class="collapsed" data-toggle="collapse" href="#collapse-2">Ví điện tử</a> </div>
-                        <div class="collapse" id="collapse-2" data-parent="#accordion1">
-                          <div class="accordion-content"> Duis aliquam hendrerit risus, sed mollis nulla luctus sit amet. Sed et magna efficitur, viverra nisl nec, rhoncus nisi. Duis nec vehicula felis. Aenean turpis lectus, cursus ac sem vel, consequat scelerisque ipsum. Donec non interdum lorem. Nulla facilisi. Fusce iaculis ex sed nulla commodo imperdiet. Proin sed rhoncus ligula, sit amet euismod augue.</div>
+                        <div class="accordion-title"> <a class="h6 mb-0" data-toggle="collapse" href="#collapse-1">Ví điện tử</a> </div>
+                        <div class="collapse show" id="collapse-1" data-parent="#accordion1">
+                          <div class="accordion-content">
+                            <p>Ví điện tử MOMO</p>
+                            <p><strong>Số điện thoại:</strong> 032.8811.678</p>
+                            <p><strong>Tên chủ tài khoản:</strong> Lê Hồng Phong</p>
+                          </div>
                         </div>
                       </div>
                       <!-- item -->
@@ -143,5 +175,37 @@
     </div>
   </div>
 </section>
+<script type="text/javascript">
+  function changeCost(id, cost, allticket){
+    var ticket = 'ticket-' + id;
+    var time = 'demo-' + id;
+    var x = document.getElementById(ticket).value;
+    document.getElementById(time).innerHTML = (x*cost).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')+ ' VND';
 
+  }
+  $('#infomation').submit(function(){
+    $('input[type=submit]').addClass("disabled");
+});
+</script>
+
+<script type="text/javascript">
+    function deleteTicket(id){
+        $.ajax({
+          url: "{{ route('ajax.ship.delete') }}",
+          type: 'GET',
+          cache: false,
+          data: {
+                id: id,
+            },
+          success: function(data){
+            console.log('success')
+            $('#cart-'+id).html(data);
+          }, 
+          error: function() {
+           alert("Có lỗi");
+         }
+       }); 
+        return false;
+      } 
+</script>
 @stop

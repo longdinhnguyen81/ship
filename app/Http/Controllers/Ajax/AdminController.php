@@ -8,6 +8,7 @@ use App\Model\Detail;
 use App\Model\Car;
 use App\Model\Hotel;
 use App\Model\Client;
+use App\Model\Picture;
 use Mail;
 
 class AdminController extends Controller
@@ -67,5 +68,16 @@ class AdminController extends Controller
         }
         $news->save();
         return $return;
+    }
+    public function picture(Request $request){
+        $id = $request->id;
+        $picture = Picture::find($id);
+        $app_path = str_replace("\\", '/', public_path());
+        $file_path = $app_path.'/upload/'.$picture->name;
+        if (file_exists($file_path)){
+            unlink($file_path);
+        }
+        $picture->delete();
+        return '';
     }
 }

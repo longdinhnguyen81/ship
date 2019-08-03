@@ -1,8 +1,16 @@
-@extends('templates.ship.master')
+  @extends('templates.ship.master')
 @section('content')
 	<!-- =======================
 	Main Banner -->
 <section class="p-0 height-500 parallax-bg" style="background:url(/templates/ship/images/banner/banner-01.png) no-repeat 100% 0%; background-size:cover;">
+@if(Session::has('toasts'))
+  @foreach(Session::get('toasts') as $toast)
+    <div class="alert alert-{{ $toast['level'] }}">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{ $toast['message'] }}
+    </div>
+  @endforeach
+@endif
 </section>
 <!-- =======================
 	Main banner -->
@@ -18,32 +26,33 @@
             <input id="tab1" type="radio" name="tabs" checked>
             <label class="pb0" for="tab1"><span class="txt-30 primary-color">ĐẶT VÉ TÀU DU LỊCH LÝ SƠN</span></label>
             <section id="content1" class="tab-content">
-              <div class="row">
-                <div class="col-lg-4 col-md-12 col-sm-6 col-xs-12 padding8">
-                  <div class="form-group"> <span class="fas fa-map-marker-alt"></span>
-                    <select class="custom-select select-big pl32 txt-14">
-                      <option selected="">Lựa chọn chuyến đi</option>
-                      <option value="location1">Cảng Sa Kỳ đến đảo Lý Sơn</option>
-                      <option value="location2">Đảo Lý Sơn về cảng Sa Kỳ</option>
-                    </select>
+              <form id="search-form" method="get" action="/dat-ve-tau-cang-sa-ky-dao-ly-son">
+                <div class="row">
+                  <div class="col-lg-4 col-md-12 col-sm-6 col-xs-12 padding8">
+                    <div class="form-group"> <span class="fas fa-map-marker-alt"></span>
+                      <select id="select" class="custom-select select-big pl32 txt-14" onchange="mySubmit(this.form)">
+                        <option value="cang-sa-ky-dao-ly-son">Cảng Sa Kỳ đến đảo Lý Sơn</option>
+                        <option value="dao-ly-son-cang-sa-ky">Đảo Lý Sơn về cảng Sa Kỳ</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 padding8">
+                    <div class="form-group"><span class="far fa-calendar-alt"></span>
+                      <input class="form-control" type="text" autocomplete="off" placeholder="Ngày đi" name="dates">
+                    </div>
+                  </div>
+                  <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 padding8">
+                    <div class="form-group"><span class="fas fa-chair"></span>
+                      <input class="form-control" type="number" placeholder="Số chỗ" min="0" max="30" name="ticket">
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-12 col-sm-6 col-xs-12 padding8">
+                    <div class="form-group">
+                      <button class="btn btn-primary btn-lg btn-grad" type="submit">Tìm kiếm</button>
+                    </div>
                   </div>
                 </div>
-                <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 padding8">
-                  <div class="form-group"><span class="far fa-calendar-alt"></span>
-                    <input class="form-control datepicker" type="text" id="datepicker" autocomplete="off" placeholder="Ngày đi" data-date-start-date="now()">
-                  </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 padding8">
-                  <div class="form-group"><span class="fas fa-chair"></span>
-                    <input class="form-control" type="number" placeholder="Số chỗ" min="0" max="30">
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-12 col-sm-6 col-xs-12 padding8">
-                  <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-grad" type="submit">Tìm kiếm</button>
-                  </div>
-                </div>
-              </div>
+              </form>
             </section>
           </div>
         </div>
@@ -269,14 +278,14 @@
           <div class="feature-box-icon"><i class="fas fa-route"></i></div>
           <h3 class="feature-box-title">Xe đưa đón tận nơi</h3>
           <p class="feature-box-desc">Hệ thống xe ô tô đời mới sang trọng đưa đón quý khách tận nơi từ nhà ga sân bay đến cảng Sa Kỳ, giá cả công khai, và rẻ nhất thị trường. Xe du lịch, xe ghép 4, 5, 7 chỗ đi từ Các sân bay Chu Lai Đà Nẵng, Hội An, Quảng Ngãi đến cảng Sa Kỳ tỉnh Quảng Ngãi</p>
-          <a class="mt-3" href="#">Xem Chi tiết!</a> </div>
+          <a class="mt-3" href="{{ route('ship.car.index') }}">Xem Chi tiết!</a> </div>
       </div>
       <div class="col-md-4 mt-30">
         <div class="featureBox icon-grad h-100">
           <div class="feature-box-icon"><i class="fab fa-avianex"></i></div>
           <h3 class="feature-box-title">Đưa đón thăm quan đảo</h3>
           <p class="feature-box-desc">Hệ thống xe du lịch 16 - 25 chỗ, chuyên đưa đón các đoàn du lịch thăm quan các địa điểm chính trên đảo Lý Sơn, tại đây có hướng dẫn viên du lịch, sẽ cho quý khách thêm nhiều kiến thức về huyện đảo và lịch sử khám phá bảo vệ biển đảo của dân tộc Việt Nam</p>
-          <a class="mt-3" href="#">Xem chi tiết!</a> </div>
+          <a class="mt-3" href="{{ route('ship.car.index') }}">Xem chi tiết!</a> </div>
       </div>
       <div class="col-md-4 mt-30">
         <div class="featureBox icon-grad h-100">
@@ -308,21 +317,22 @@
         <p class="subtitle text-secondary nopadding">Khách sạn trên đảo Lý Sơn</p>
         <h1 class="paddtop1 font-weight lspace-sm">Thông tin khách sạn</h1>
       </div>
-      <div class="col-md-4 d-lg-flex align-items-center justify-content-end"><a href="" class="blist text-sm ml-2">Tất cả khách sạn<i class="fas fa-angle-double-right ml-2"></i></a></div>
+      <div class="col-md-4 d-lg-flex align-items-center justify-content-end"><a href="{{ route('ship.hotel.index') }}" class="blist text-sm ml-2">Tất cả khách sạn<i class="fas fa-angle-double-right ml-2"></i></a></div>
     </div>
     <div class="row">
+      @foreach($hotels as $hotel)
       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
         <div class="listroBox">
-          <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room5.jpg" class="img-fluid" alt="" >
+          <figure> <a href="{{ route('ship.hotel.detail', str_slug($hotel->name)) }}" class="wishlist_bt"></a> <a href="{{ route('ship.hotel.detail', str_slug($hotel->name)) }}"><img src="/upload/{{ $hotel->picture }}" class="img-fluid" alt="{{ $hotel->name }}" >
             <div class="read_more"><span>Chi tiết</span></div>
             </a> </figure>
           <div class="listroBoxmain">
-            <h3><a href="hotel-detailed.html">Khách sạn Mường Thanh</a></h3>
-            <p>Khách sạn 4 sao đầu tiên tại Lý Sơn với chất lượng phục vụ chuyên nghiệp</p>
-            <a class="address" href="">An Hải - Lý Sơn</a> </div>
+            <h3><a href="hotel-detailed.html">{{ $hotel->name }}</a></h3>
+            <p>{{ $hotel->description }}</p>
+            <a class="address" href="{{ route('ship.hotel.detail', str_slug($hotel->name)) }}">Huyện đảo Lý Sơn</a> </div>
           <ul>
             <li>
-              <p class="card-text text-muted"><span class="h4 text-primary">1.250.000</span> / đêm</p>
+              <p class="card-text text-muted"><span class="h4 text-primary">{{ number_format($hotel->cost, 0, ',', '.') }}</span> / đêm</p>
             </li>
             <li>
               <div class="R_retings">
@@ -331,49 +341,8 @@
             </li>
           </ul>
         </div>
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-        <div class="listroBox">
-          <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room1.jpg" class="img-fluid" alt="" >
-            <div class="read_more"><span>Chi tiết</span></div>
-            </a> </figure>
-          <div class="listroBoxmain">
-            <h3><a href="hotel-detailed.html">Khách sạn Đảo Ngọc</a></h3>
-            <p>Khách sạn 4 sao mới được xây dựng với đầy đủ tiện nghi và view đẹp.</p>
-            <a class="address" href="">An Vĩnh Lý Sơn</a> </div>
-          <ul>
-            <li>
-              <p class="card-text text-muted"><span class="h4 text-primary">1.150.000</span> / đêm</p>
-            </li>
-            <li>
-              <div class="R_retings">
-                <div class="list-rat-ch list-room-rati"> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-        <div class="listroBox">
-          <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room2.jpg" class="img-fluid" alt="" >
-            <div class="read_more"><span>Chi tiết</span></div>
-            </a> </figure>
-          <div class="listroBoxmain">
-            <h3><a href="hotel-detailed.html">Khách sạn Central</a></h3>
-            <p>Khách sạn 3 sao tại Lý Sơn với giá thành rẻ phù hợp với mọi người.</p>
-            <a class="address" href="">Get directions</a> </div>
-          <ul>
-            <li>
-              <p class="card-text text-muted"><span class="h4 text-primary">700.000</span> / đêm</p>
-            </li>
-            <li>
-              <div class="R_retings">
-                <div class="list-rat-ch list-room-rati"> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="false"></i> </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      </div> 
+      @endforeach
     </div>
   </div>
 </section>
@@ -397,64 +366,58 @@
         <p class="subtitle text-secondary nopadding">Thuê xe du lịch Lý Sơn</p>
         <h1 class="paddtop1 font-weight lspace-sm">Thông tin chuyến xe</h1>
       </div>
-      <div class="col-md-4 d-lg-flex align-items-center justify-content-end"><a href="" class="blist text-sm ml-2">Tất cả chuyến xe<i class="fas fa-angle-double-right ml-2"></i></a></div>
+      <div class="col-md-4 d-lg-flex align-items-center justify-content-end"><a href="{{ route('ship.car.index') }}" class="blist text-sm ml-2">Tất cả chuyến xe<i class="fas fa-angle-double-right ml-2"></i></a></div>
     </div>
     <div class="row">
+      @foreach($cars as $car)
       <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
         <div class="listroBox">
-          <figure></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room5.jpg" class="img-fluid" alt="" >
+          <figure><<a href="{{ route('ship.car.detail', str_slug($car->name)) }}"><img src="/upload/{{ $car->picture }}" class="img-fluid" alt="{{ $car->title }}" >
             <div class="read_more"><span>Chi tiết</span></div>
             </a> </figure>
           <div class="listroBoxmain">
-            <h3><a href="hotel-detailed.html">Thuê xe Đà Nẵng - Sa Kỳ</a></h3>
-            <p>Khách sạn 4 sao đầu tiên tại Lý Sơn với chất lượng phục vụ chuyên nghiệp</p>
-            <a class="address" href="">An Hải - Lý Sơn</a> </div>
-          <ul>
-            <li>
-              <p class="card-text text-muted"><span class="h4 text-primary">1.250.000</span> / đêm</p>
-            </li>
-          </ul>
+            <h3><a href="{{ route('ship.car.detail', str_slug($car->name)) }}">{{ $car->name }}</a></h3>
+            <p>{{ $car->description }}</p></div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-        <div class="listroBox">
-          <figure> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room1.jpg" class="img-fluid" alt="" >
-            <div class="read_more"><span>Chi tiết</span></div>
-            </a> </figure>
-          <div class="listroBoxmain">
-            <h3><a href="hotel-detailed.html">Thuê xe Chu Lai - Sa Kỳ</a></h3>
-            <p>Khách sạn 4 sao mới được xây dựng với đầy đủ tiện nghi và view đẹp.</p>
-            <a class="address" href="">An Vĩnh Lý Sơn</a> </div>
-          <ul>
-            <li>
-              <p class="card-text text-muted"><span class="h4 text-primary">1.150.000</span> / đêm</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-        <div class="listroBox">
-          <figure><a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room2.jpg" class="img-fluid" alt="" >
-            <div class="read_more"><span>Chi tiết</span></div>
-            </a> </figure>
-          <div class="listroBoxmain">
-            <h3><a href="hotel-detailed.html">Thuê xe Hội An - Sa Kỳ</a></h3>
-            <p>Khách sạn 3 sao tại Lý Sơn với giá thành rẻ phù hợp với mọi người.</p>
-            <a class="address" href="">Get directions</a> </div>
-          <ul>
-            <li>
-              <p class="card-text text-muted"><span class="h4 text-primary">700.000</span> / đêm</p>
-            </li>
-            <li>
-              <div class="R_retings">
-                <div class="list-rat-ch list-room-rati"> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="true"></i> <i class="fa fa-star" aria-hidden="false"></i> </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
+      @endforeach
     </div>
   </div>
 </section>
+<script type="text/javascript">
+    function mySubmit(theForm) {
+            var action = $("#select").val();
+            console.log(action)
+            $("#search-form").attr("action", "/dat-ve-tau-"+action);
+    }
+</script>
+<script src="/templates/ship/js/jquery-2.2.4.min.js"></script>
+<script>
+    var today = new Date();
+    var dd = today.getDate() + 1;
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    } 
+    if (mm < 10) {
+      mm = '0' + mm;
+    } 
+    var day = mm + '-' + dd + '-' + yyyy;
+    console.log(day)
 
+    $(function() {
+        $('input[name="dates"]').daterangepicker({
+            minDate: day,
+            singleDatePicker: true,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+        $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY'));
+        });
+    });
+
+</script>
 @stop

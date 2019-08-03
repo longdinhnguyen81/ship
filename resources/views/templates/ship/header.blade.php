@@ -8,6 +8,13 @@
 <!-- Bootstrap CSS -->
 <link href="/templates/ship/css/style.css" type="text/css" rel="stylesheet" />
 <link href="/templates/ship/css/bootstrap-datepicker.css" type="text/css" rel="stylesheet" />
+<link href="/templates/ship/css/tai.css" type="text/css" rel="stylesheet" />
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script src="/templates/ship/js/jquery-2.2.4.min.js"></script>
 <!-- Favicon -->
 <!-- Favicon and Touch Icons -->
 <link href="/templates/ship/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -55,8 +62,8 @@ a.btn-action {
           <!-- Language -->
           <!-- Top info -->
           <ul class="nav list-unstyled ml-3">
-            <li class="nav-item mr-3"> <a class="navbar-link" href="#"><strong>Phone:</strong> 0935.091.684</a> </li>
-            <li class="nav-item mr-3"> <a class="navbar-link" href="#"><strong>Email:</strong> taiembkdn@gmail.com</a> </li>
+            <li class="nav-item mr-3"> <a class="navbar-link" href="tel:0328811678"><strong>Phone:</strong> 032.8811.678</a> </li>
+            <li class="nav-item mr-3"> <a class="navbar-link" href="mail:datvetauonline@gmail.com"><strong>Email:</strong> datvetauonline@gmail.com</a> </li>
           </ul>
         </div>
         
@@ -81,7 +88,7 @@ a.btn-action {
   <nav class="navbar navbar-expand-lg">
     <div class="container"> 
       <!-- Logo --> 
-      <a class="navbar-brand" href="index.html"> <img src="/templates/ship/images/logo-header.png" alt="travelgo"> </a> 
+      <a class="navbar-brand" href="/"> <img src="/templates/ship/images/logo-header.png" alt="travelgo"> </a> 
       <!-- Menu opener button -->
       <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"> </span> </button>
       <!-- Main Menu Start -->
@@ -92,13 +99,13 @@ a.btn-action {
           </li>
           <li class="nav-item dropdown"> <a class="nav-link" href="{{ route('ship.hotel.index') }}">Đặt khách sạn</a></li>
           <li class="nav-item dropdown"> <a class="nav-link" href="{{ route('ship.car.index') }}">Đặt xe</a></li>
-          <li class="nav-item dropdown"> <a class="nav-link" href="/dat-ve-tau-sa-ky-di-ly-son">Đặt vé tàu</a></li>
+          <li class="nav-item dropdown"> <a class="nav-link" href="/dat-ve-tau-cang-sa-ky-dao-ly-son">Đặt vé tàu</a></li>
           
-          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="docMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tin tức du lịch</a>
+          <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="{{ route('ship.blog.index') }}" id="docMenu" data-toggle="dropdown">Tin tức du lịch</a>
             <ul class="dropdown-menu" aria-labelledby="docMenu">
-              <li><a class="dropdown-item">Home Cars</a></li>
-              <li><a class="dropdown-item">List View</a></li>
-              <li><a class="dropdown-item">Grid View</a></li>
+              @foreach($allcategorys as $cat)
+              <li><a href="{{ route('ship.blog.blog', str_slug($cat->name)) }}" class="dropdown-item">{{ $cat->name }}</a></li>
+              @endforeach
             </ul>
           </li>
         </ul>
@@ -110,7 +117,7 @@ a.btn-action {
         <div class="nav-item search border-0 pl-3 pr-0 px-lg-2" id="search"> <a class="nav-link" data-toggle="collapse" href="#search-open"><i class="fas fa-search"></i></a> </div>
         <!-- extra item Btn-->
         <div class="nav-item border-0 d-none d-lg-inline-block align-self-center"> 
-          <a href="#" class=" btn btn-sm btn-grad text-white mb-0"><i class="fas fa-cart-plus"></i></a>
+          <a href="{{ route('ship.ship.cart') }}" class=" btn btn-sm btn-grad text-white mb-0"><i class="fas fa-cart-plus"></i></a>
         </div>
       </div>
       <!-- Header Extras End--> 
@@ -120,3 +127,4 @@ a.btn-action {
 </header>
 <!-- =======================
 	header End--> 
+  

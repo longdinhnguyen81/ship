@@ -22,10 +22,6 @@
 <!-- =======================
 	Banner innerpage -->
 
-
-
-
-
 <div class="section section-padding">
             <div class="container">
                 <div class="row">

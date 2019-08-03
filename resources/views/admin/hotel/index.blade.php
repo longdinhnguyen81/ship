@@ -46,6 +46,7 @@
                                     <th>ID</th>
                                     <th>Tên khách sạn</th>
                                     <th>Mô tả</th>
+                                    <th>Loại phòng</th>
                                     <th>Hình ảnh</th>
                                     <th>Tình trạng</th>
                                     <th>Chức năng</th>
@@ -55,7 +56,30 @@
                                     <td>{{ $hotel->id }}</td>
                                     <td>{{ $hotel->name }}</td>
                                     <td>{{ $hotel->description }}</td>
-                                    <td><img src="/upload/{{ $hotel->picture }}" alt="{{ $hotel->name }}" /></td>
+                                    <td>
+                                        
+                                        <table style="border: 1px">
+                                            <tr>
+                                                <th>Tên phòng</th>
+                                                <th>Giá phòng</th>
+                                                <th>Loại phòng</th>
+                                                <th>Chức năng</th>
+                                            </tr>
+                                            @foreach($hotel->type as $type)
+                                            <tr>
+                                                <td>{{ $type->name }}</td>
+                                                <td>{{ $type->cost }}</td>
+                                                <td>{{ $type->type }}</td>
+                                                <td>
+                                                    <button onclick="window.location.href='{{ route('admin.type.edit', ['id'=>$hotel->id, 'cid' => $type->id]) }}'" data-toggle="tooltip" title="Edit" class="pd-setting-ed"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                                    <button onclick="window.location.href='{{ route('admin.type.delete', ['id'=>$hotel->id, 'cid' => $type->id]) }}'" data-toggle="tooltip" title="Trash" class="pd-setting-ed"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                        <button onclick="window.location.href='{{ route('admin.type.add', $hotel->id) }}'" data-toggle="tooltip" title="Add" class="pd-setting-ed"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
+                                    <td><img src="/upload/{{ $hotel->picture }}" alt="{{ $hotel->name }}" />
+                                    </td>
                                     <td id="result-{{ $hotel->id }}">
                                         @if($hotel->active == 1)
                                             <button onClick="activeHotel({{ $hotel->id }})" class="pd-setting">Active</button>

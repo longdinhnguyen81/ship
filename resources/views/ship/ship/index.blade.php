@@ -28,31 +28,24 @@
       <div class="col-lg-4 col-md-4 col-sm-12">
         <div class="Filter-left">
           <h2>Tìm kiếm vé tàu đi Lý Sơn Online</h2>
-          <form action="#" autocomplete="off" >
+          <form action="/dat-ve-tau-cang-sa-ky-dao-ly-son" autocomplete="off" method="get">
             <div class="mb-left">
               <label for="form_type" class="form-label">Lựa chọn chuyến đi</label>
-              <select class="custom-select select-big ">
-                <option value="type_0">Entire place </option>
-                <option value="type_1">Private room </option>
-                <option value="type_2">Shared room </option>
+              <select class="custom-select select-big" onchange="mySubmit(this.form)">
+                <option selected="">Lựa chọn chuyến đi</option>
+                <option value="cang-sa-ky-dao-ly-son">Cảng Sa Kỳ đến đảo Lý Sơn</option>
+                <option value="dao-ly-son-cang-sa-ky">Đảo Lý Sơn về cảng Sa Kỳ</option>
               </select>
             </div>
             <div class="mb-left">
               <label for="form_dates" class="form-label">Ngày đi</label>
               <div class="form-group">
-                <input class="form-control" type="text" id="datepicker" autocomplete="off" placeholder="Choose your dates">
+                <input class="form-control" type="text" name="dates" autocomplete="off" value="{{ $dates }}">
               </div>
             </div>
             <div class="mb-left">
-              <label for="form_guests" class="form-label">Số ghế</label>
-              <select class="custom-select select-big ">
-                <option selected="">Guests</option>
-                <option value="guests_0">01 </option>
-                <option value="guests_1">02 </option>
-                <option value="guests_2">03 </option>
-                <option value="guests_3">04 </option>
-                <option value="guests_4">05 </option>
-              </select>
+              <label for="form_guests" class="form-label">Số vé</label>
+              <input class="form-control" name="ticket" type="number" autocomplete="off" placeholder="Nhập số vé" min=1 max=20 value="{{ $ticket }}">
             </div>
             <div class="pb-left">
               <div id="moreFilters" class="collapse show">
@@ -69,92 +62,50 @@
       </div>
       <div class="col-lg-8 col-md-8 col-sm-12">
         <div class="resultBar pt10">
-          <h3 class="txt-20">Tìm thấy 10 chuyến tàu trong ngày 18-07-2019</h3>
+          <h3 class="txt-20">Tìm thấy {{ $ships->count() }} chuyến tàu trong ngày {{ $dates }}</h3>
         </div>
         <!-- Item vé tàu-->
-        <div class="row box-trip">
-          <div class="col-12 col-sm-6 col-md-6">
-            <p><span class="trip-time-start">18h00</span><span class="trip-location">Đảo Lý Sơn</span></p>
-            <p><span class="trip-time-start">18h30</span><span class="trip-location">Cảng Sa Kỳ</span></p>
-            <p><i class="fas fa-location-arrow trip-brand-icon"></i><span class="trip-brand">Tàu An Vĩnh Express 1</span></p>
+        @foreach($ships as $ship)
+          @php
+            $timeto = 0;
+            $hourto = 0;
+            $times = $ship->time;
+            $time = explode('h', $times);
+          @endphp
+          @if($time[1] < 25)
+            @php
+              $timeto = $time[1] + 35;
+              $hourto = $time[0];
+            @endphp
+          @else
+            @php
+              $timeto = $time[1] + 35 - 60;
+              $hourto = $time[0] + 1;
+            @endphp
+          @endif
+            @php
+              $time_to = $hourto.'h'.$timeto;
+            @endphp
+        <form action="{{ route('ship.ship.cart') }}" method="post">
+          {{ csrf_field() }}
+          <div class="row box-trip">
+            <div class="col-12 col-sm-6 col-md-6">
+              <p><span class="trip-time-start">{{ $ship->time }}</span><span class="trip-location">{{ $ship->train_from }}</span></p>
+              <p><span class="trip-time-start">{{ $time_to }}</span><span class="trip-location">{{ $ship->train_to }}</span></p>
+              <p><i class="fas fa-location-arrow trip-brand-icon"></i><span class="trip-brand">{{ $ship->train->name }}</span></p>
+            </div>
+            <div class="col-6 col-sm-3 col-md-3 p10">
+                <p class="trip-price">{{ number_format($ship->cost,0,',','.') }}<span class="trip-price-d">đ</span></p>
+            </div>
+            <input type="hidden" name="cost_id" value="{{ $ship->id }}" />
+            <input type="hidden" name="date" value="{{ $dates }}" />
+            <input type="hidden" name="ticket" value="{{ $ticket }}" />
+            <div class="col-6 col-sm-3 col-md-3 p10">
+                <button type="submit" class="bg-grad trip-button-book">Chọn vé</button>
+            </div>
           </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <p class="trip-price">170,000<span class="trip-price-d">đ</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <a href="#" class="bg-grad trip-button-book">Chọn vé</a>
-          </div>
-        </div>
-        <!-- Item vé tàu-->
-        <div class="row box-trip">
-          <div class="col-12 col-sm-6 col-md-6">
-            <p><span class="trip-time-start">19h00</span><span class="trip-location">Đảo Lý Sơn</span></p>
-            <p><span class="trip-time-start">19h35</span><span class="trip-location">Cảng Sa Kỳ</span></p>
-            <p><i class="fas fa-location-arrow trip-brand-icon"></i><span class="trip-brand">Tàu Super biển đông 1</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <p class="trip-price">168,000<span class="trip-price-d">đ</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <a href="#" class="bg-grad trip-button-book">Chọn vé</a>
-          </div>
-        </div>
-        <!-- Item vé tàu-->
-        <div class="row box-trip">
-          <div class="col-12 col-sm-6 col-md-6">
-            <p><span class="trip-time-start">18h00</span><span class="trip-location">Đảo Lý Sơn</span></p>
-            <p><span class="trip-time-start">18h30</span><span class="trip-location">Cảng Sa Kỳ</span></p>
-            <p><i class="fas fa-location-arrow trip-brand-icon"></i><span class="trip-brand">Tàu An Vĩnh Express 1</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <p class="trip-price">170,000<span class="trip-price-d">đ</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <a href="#" class="bg-grad trip-button-book">Chọn vé</a>
-          </div>
-        </div>
-        <!-- Item vé tàu-->
-        <div class="row box-trip">
-          <div class="col-12 col-sm-6 col-md-6">
-            <p><span class="trip-time-start">19h00</span><span class="trip-location">Đảo Lý Sơn</span></p>
-            <p><span class="trip-time-start">19h35</span><span class="trip-location">Cảng Sa Kỳ</span></p>
-            <p><i class="fas fa-location-arrow trip-brand-icon"></i><span class="trip-brand">Tàu Super biển đông 1</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <p class="trip-price">168,000<span class="trip-price-d">đ</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <a href="#" class="bg-grad trip-button-book">Chọn vé</a>
-          </div>
-        </div>
-        <!-- Item vé tàu-->
-        <div class="row box-trip">
-          <div class="col-12 col-sm-6 col-md-6">
-            <p><span class="trip-time-start">18h00</span><span class="trip-location">Đảo Lý Sơn</span></p>
-            <p><span class="trip-time-start">18h30</span><span class="trip-location">Cảng Sa Kỳ</span></p>
-            <p><i class="fas fa-location-arrow trip-brand-icon"></i><span class="trip-brand">Tàu An Vĩnh Express 1</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <p class="trip-price">170,000<span class="trip-price-d">đ</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <a href="#" class="bg-grad trip-button-book">Chọn vé</a>
-          </div>
-        </div>
-        <!-- Item vé tàu-->
-        <div class="row box-trip">
-          <div class="col-12 col-sm-6 col-md-6">
-            <p><span class="trip-time-start">19h00</span><span class="trip-location">Đảo Lý Sơn</span></p>
-            <p><span class="trip-time-start">19h35</span><span class="trip-location">Cảng Sa Kỳ</span></p>
-            <p><i class="fas fa-location-arrow trip-brand-icon"></i><span class="trip-brand">Tàu Super biển đông 1</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <p class="trip-price">168,000<span class="trip-price-d">đ</span></p>
-          </div>
-          <div class="col-6 col-sm-3 col-md-3 p10">
-              <a href="#" class="bg-grad trip-button-book">Chọn vé</a>
-          </div>
-        </div>
+        </form>
+        @endforeach
       </div>
     </div>
   </div>
@@ -205,5 +156,40 @@
 </section>
 <!-- =======================
 	newsletter --> 
+<script type="text/javascript">
+    function mySubmit(theForm) {
+            var action = $("#select").val();
+            console.log(action)
+            $("#search-form").attr("action", "/dat-ve-tau-"+action);
+    }
+</script>
+<script src="/templates/ship/js/jquery-2.2.4.min.js"></script>
+<script>
+    var today = new Date();
+    var dd = today.getDate() + 1;
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    } 
+    if (mm < 10) {
+      mm = '0' + mm;
+    } 
+    var day = mm + '-' + dd + '-' + yyyy;
+    console.log(day)
 
+    $(function() {
+        $('input[name="dates"]').daterangepicker({
+            minDate: day,
+            singleDatePicker: true,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+        $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY'));
+        });
+    });
+
+</script>
 @stop

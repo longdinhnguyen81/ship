@@ -9,7 +9,7 @@
             <img src="/templates/ship/images/logo-footer.png" > 
             <!-- SVG Logo End --> 
             </a>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>Lý Sơn từ lâu đã là một trong những địa điểm du lịch nổi tiếng ở Việt Nam. Đặt vé tàu đi Lý Sơn chưa bao giờ dễ dàng đến thế. Hãy du lịch Lý Sơn ngay hôm nay</p>
           </div>
         </div>
         <!-- Footer widget 2 -->
@@ -17,11 +17,10 @@
           <div class="widget">
             <h6>Các tiện ích</h6>
             <ul class="nav flex-column">
-              <li class="nav-item"><a class="nav-link" href="">Đặt vé tàu</a></li>
-              <li class="nav-item"><a class="nav-link" href="">Thuê xe</a></li>
-              <li class="nav-item"><a class="nav-link" href="index.html">Đặt khách sạn</a></li>
-              <li class="nav-item"><a class="nav-link" href="">Đặt xe tham quan đảo</a></li>
-              <li class="nav-item"><a class="nav-link" href="">Đặt cano đi đảo bé</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('ship.index.about') }}">Giới thiệu hệ thống bán vé</a></li>
+              <li class="nav-item"><a class="nav-link" href="/dat-ve-tau-cang-sa-ky-dao-ly-son">Đặt vé tàu Lý Sơn</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('ship.hotel.index') }}">Đặt khách sạn</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('ship.blog.index') }}">Tin tức du lịch</a></li>
             </ul>
           </div>
         </div>
@@ -35,11 +34,11 @@
         <div class="col-md-3 col-sm-6 order-sm-2">
           <div class="widget address">
             <ul class="list-unstyled">
-              <li class="media mb-3"><i class="fas fa-map-marked-alt mr-3 display-8"></i>216 Coburn Shahi Road Mumbai, Near Center Road, IL 54785. </li>
-              <li class="media mb-3"><i class="mr-3 display-8 fas fa-headphones-alt"></i> (547) 457-5757 </li>
-              <li class="media mb-3"><i class="mr-3 display-8 far fa-envelope"></i> help@travelGo.com</li>
+              <li class="media mb-3"><i class="fas fa-map-marked-alt mr-3 display-8"></i>Tầng 2, 121 Cù Chính Lan - Thanh Khê - Đà Nẵng. </li>
+              <li class="media mb-3"><i class="mr-3 display-8 fas fa-headphones-alt"></i> 032.8811.678 </li>
+              <li class="media mb-3"><i class="mr-3 display-8 far fa-envelope"></i> datvetauonline@gmail.com</li>
               <li class="media mb-3"><i class="mr-3 display-8 far fa-clock"></i>
-                <p>Thứ 2 - 7: <strong>07:00 - 20:00</strong> <br>
+                <p>Thứ 2 - 7: <strong>07:00 - 17:30</strong> <br>
                   Chủ Nhật: <strong>Đóng cửa</strong></p>
               </li>
             </ul>
@@ -54,7 +53,7 @@
     <div class="container">
       <div class="d-md-flex justify-content-between align-items-center py-3 text-center text-md-left"> 
         <!-- copyright text -->
-        <div class="copyright-text">©2019 All Rights Reserved by <a href="#!"> TravelGo.</a></div>
+        <div class="copyright-text">©2019 All Rights Reserved by <a href="">TauLySon.com</a></div>
         <!-- copyright links--> 
         
       </div>

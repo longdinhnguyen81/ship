@@ -7796,9 +7796,8 @@ contact-pg-section
 	color: #fff;
 	font-weight: 600;
 	/* background: #F7F9FB; */
-    padding: 7px 12px;
-	border-radius: 4px;
-	border: 1px dotted #e4e4e4;
+	border-radius: 4px;/*
+	border: 1px dotted #e4e4e4;*/
 	text-transform: uppercase;
 	line-height: 17px;
 }
@@ -8002,7 +8001,10 @@ contact-pg-section
 	font-size: 16px;
 }
 .bookex {
-	color:#ffcd22;
+	color:black;
+	text-decoration: underline;
+	text-decoration-color: #ffcd22;
+	font-weight: bold;
 }
 .NeedHelp {
 	padding-bottom: 5px;
@@ -10482,7 +10484,8 @@ h2.title {
     align-items: center;
     color:#fff;
     font-size:17px;
-    font-weight:500
+    font-weight:500;
+    padding: 10px 40px;
 }
  @media (max-width: 576px) {
  	.trip-time-start{

@@ -26,229 +26,77 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-4 col-md-4 col-sm-12">
-        <div class="Filter-left">
-          <form action="#" autocomplete="off" >
-            <div class="mb-left">
-              <label for="form_dates" class="form-label">Ngày</label>
-              <div class="form-group">
-                <input class="form-control" type="text" id="datepicker" autocomplete="off" placeholder="Ngày đặt phòng">
+        <div class="blog-sidebar">
+          <div class="widget search-widget">
+            <h3>Tìn kiếm</h3>
+            <form action="{{ route('ship.blog.search') }}" method="get">
+              <div>
+                <input type="text" class="form-control" placeholder="Tìm kiếm tin tức.." name="name">
+                <button type="submit"><i class="ti-search"></i></button>
               </div>
-            </div>
-            <div class="mb-left">
-              <label for="form_guests" class="form-label">Số lượng</label>
-              <div class="form-group">
-                <input class="form-control" type="number" placeholder="Số lượng">
+            </form>
+          </div>
+          <div class="widget category-widget">
+            <h3>Danh mục tin</h3>
+            <ul>
+              @foreach($categorys as $cat)
+              <li><a href="{{ route('ship.blog.blog', str_slug($cat->name)) }}">{{ $cat->name }} <span>({{ $cat->detail->count() }})</span></a></li>
+              @endforeach
+            </ul>
+          </div>
+          <div class="widget recent-post-widget">
+            <h3>Tin tức mới nhất</h3>
+            <div class="posts">
+              @foreach($details as $detail)
+              <div class="post">
+                <div class="img-holder"> <img style="width: 100px;height: 50px" src="/upload/{{ $detail->picture }}" alt="{{ $detail->title }}"> </div>
+                <div class="details">
+                  <h4><a href="{{ route('ship.blog.detail', ['slug' => str_slug($detail->title), 'id' => $detail->id]) }}">{{ $detail->title }}</a></h4>
+                  <span class="date">{{ $detail->created_at }}</span> </div>
               </div>
+              @endforeach
             </div>
-            <div class="mb-left">
-              <label for="form_type" class="form-label">Loại khách sạn</label>
-              <select class="custom-select select-big ">
-                <option value="type_0">4* </option>
-                <option value="type_1">3* </option>
-                <option value="type_2">Nhà nghỉ, homestay </option>
-              </select>
-            </div>
-            <div class="mb-left">
-              <label class="form-label">Kiểu phòng</label>
-              <ul class="list-inline mb-0 mt-1">
-                <li class="list-inline-item">
-                  <div class="custom-control custom-switch">
-                    <input id="instantBook" type="checkbox" class="custom-control-input">
-                    <label for="instantBook" class="custom-control-label"> <span class="text-sm">Phòng đôi</span></label>
-                  </div>
-                </li>
-                <li class="list-inline-item">
-                  <div class="custom-control custom-switch">
-                    <input id="superhost" type="checkbox" class="custom-control-input">
-                    <label for="superhost" class="custom-control-label"> <span class="text-sm">Deluxe</span></label>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </form>
+          </div>
+          <div class="widget tag-widget">
+            <h3>Tags phổ biến</h3>
+            <ul>
+              <li><a href="#">Du lịch Đà Nẵng</a></li>
+              <li><a href="#">Thuê xe Đà Nẵng đi Bà Nà</a></li>
+              <li><a href="#">Thuê xe đi vinpearland</a></li>
+              <li><a href="#">Research</a></li>
+              <li><a href="#">Corporate</a></li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="col-lg-8 col-md-8 col-sm-12">
         <div class="row">
-          
+          @foreach($hotels as $hotel)
           <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="row listroBox">
                   <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 Nopadding">
-                    <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room6.jpg" class="img-fluid" alt="" >
+                    <figure> <a href="{{ route('ship.hotel.detail', str_slug($hotel->name)) }}" class="wishlist_bt"></a> <a href="{{ route('ship.hotel.detail', str_slug($hotel->name)) }}"><img src="/upload/{{ $hotel->picture }}" class="img-fluid" alt="{{ $hotel->name }}" >
                       <div class="read_more"><span>Chi tiết</span></div>
                       </a> </figure>
                   </div>
                   <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 Nopadding">
                     <div class="listroBoxmain">
-                      <h3><a href="hotel-detailed.html">Khách sạn Mường Thanh</a></h3>
-                      <p>Khách sạn 4 sao đầu tiên tại Mường Thanh</p>
+                      <h3><a href="{{ route('ship.hotel.detail', str_slug($hotel->name)) }}">{{ $hotel->name }}</a></h3>
+                      <p>{{ $hotel->description }}</p>
                       <a class="address" href="">Trung tâm đảo Lý Sơn</a> </div>
                     <ul>
                       <li><span class="Ropen">Đang mở cửa</span></li>
-                      <li>
-                        <div class="R_retings"><span>Review:<em>122 Reviews</em></span><strong>8.2</strong></div>
-                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
-          <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="row listroBox">
-                  <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 Nopadding">
-                    <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room1.jpg" class="img-fluid" alt="" >
-                      <div class="read_more"><span>Chi tiết</span></div>
-                      </a> </figure>
-                  </div>
-                  <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 Nopadding">
-                    <div class="listroBoxmain">
-                      <h3><a href="hotel-detailed.html">Khách sạn Đảo Ngọc</a></h3>
-                      <p>Khách sạn 4 sao mới nổi tại Lý Sơn</p>
-                      <a class="address" href="">View biển Lý Sơn</a> </div>
-                    <ul>
-                      <li><span class="Ropen">Đang mở cửa</span></li>
-                      <li>
-                        <div class="R_retings"><span>Review:<em>122 Reviews</em></span><strong>8.2</strong></div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>    
-          <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="row listroBox">
-                  <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 Nopadding">
-                    <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room2.jpg" class="img-fluid" alt="" >
-                      <div class="read_more"><span>Read more</span></div>
-                      </a> </figure>
-                  </div>
-                  <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 Nopadding">
-                    <div class="listroBoxmain">
-                      <h3><a href="hotel-detailed.html">Blue Hill Restaurant</a></h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</p>
-                      <a class="address" href="">Get directions</a> </div>
-                    <ul>
-                      <li><span class="Ropen">Now Open</span></li>
-                      <li>
-                        <div class="R_retings"><span>Blue Hill<em>122 Reviews</em></span><strong>8.2</strong></div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>      
-          <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="row listroBox">
-                  <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 Nopadding">
-                    <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room3.jpg" class="img-fluid" alt="" >
-                      <div class="read_more"><span>Read more</span></div>
-                      </a> </figure>
-                  </div>
-                  <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 Nopadding">
-                    <div class="listroBoxmain">
-                      <h3><a href="hotel-detailed.html">Blue Hill Restaurant</a></h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</p>
-                      <a class="address" href="">Get directions</a> </div>
-                    <ul>
-                      <li><span class="Ropen">Now Open</span></li>
-                      <li>
-                        <div class="R_retings"><span>Blue Hill<em>122 Reviews</em></span><strong>8.2</strong></div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>         
-          <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="row listroBox">
-                  <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 Nopadding">
-                    <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room4.jpg" class="img-fluid" alt="" >
-                      <div class="read_more"><span>Read more</span></div>
-                      </a> </figure>
-                  </div>
-                  <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 Nopadding">
-                    <div class="listroBoxmain">
-                      <h3><a href="hotel-detailed.html">Blue Hill Restaurant</a></h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</p>
-                      <a class="address" href="">Get directions</a> </div>
-                    <ul>
-                      <li><span class="Ropen">Now Open</span></li>
-                      <li>
-                        <div class="R_retings"><span>Blue Hill<em>122 Reviews</em></span><strong>8.2</strong></div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>          
-          <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="row listroBox">
-                  <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 Nopadding">
-                    <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room5.jpg" class="img-fluid" alt="" >
-                      <div class="read_more"><span>Read more</span></div>
-                      </a> </figure>
-                  </div>
-                  <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 Nopadding">
-                    <div class="listroBoxmain">
-                      <h3><a href="hotel-detailed.html">Blue Hill Restaurant</a></h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</p>
-                      <a class="address" href="">Get directions</a> </div>
-                    <ul>
-                      <li><span class="Ropen">Now Open</span></li>
-                      <li>
-                        <div class="R_retings"><span>Blue Hill<em>122 Reviews</em></span><strong>8.2</strong></div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>  
-          <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="row listroBox">
-                  <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 Nopadding">
-                    <figure> <a href="hotel-detailed.html" class="wishlist_bt"></a> <a href="hotel-detailed.html"><img src="/templates/ship/images/hotels/room7.jpg" class="img-fluid" alt="" >
-                      <div class="read_more"><span>Read more</span></div>
-                      </a> </figure>
-                  </div>
-                  <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12 Nopadding">
-                    <div class="listroBoxmain">
-                      <h3><a href="hotel-detailed.html">Blue Hill Restaurant</a></h3>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</p>
-                      <a class="address" href="">Get directions</a> </div>
-                    <ul>
-                      <li><span class="Ropen">Now Open</span></li>
-                      <li>
-                        <div class="R_retings"><span>Blue Hill<em>122 Reviews</em></span><strong>8.2</strong></div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> 
+          @endforeach
         </div>
-        
+        {{-- 
     <div class="paginationCommon blogPagination categoryPagination">
           <nav aria-label="Page navigation">
             <ul class="pagination">
@@ -261,7 +109,7 @@
               <li> <a href="#" aria-label="Next"> <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span> </a> </li>
             </ul>
           </nav>
-        </div>  
+        </div>  --}} 
       </div>
     </div>
   </div>
@@ -269,7 +117,7 @@
 
 <!-- =======================
 	newsletter -->
-<section class="bg-light pattern-overlay-1-dark">
+{{-- <section class="bg-light pattern-overlay-1-dark">
   <div class="container">
     <div class="col-md-12 col-lg-9 mx-auto p-4 p-sm-5">
       <div class="text-center px-0 px-sm-5">
@@ -283,7 +131,7 @@
       </div>
     </div>
   </div>
-</section>
+</section> --}}
 <!-- =======================
 	newsletter --> 
 @stop

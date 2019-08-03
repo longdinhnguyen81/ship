@@ -1,32 +1,5 @@
 @extends('templates.admin.master')
 @section('content')
-<style type="text/css">
-    input[type="file"] {
-      display: block;
-    }
-    .imageThumb {
-      max-height: 75px;
-      border: 2px solid;
-      padding: 1px;
-      cursor: pointer;
-    }
-    .pip {
-      display: inline-block;
-      margin: 10px 10px 0 0;
-    }
-    .remove {
-      display: block;
-      background: #444;
-      border: 1px solid black;
-      color: white;
-      text-align: center;
-      cursor: pointer;
-    }
-    .remove:hover {
-      background: white;
-      color: black;
-    }
-</style>
     <div class="breadcome-area">
                 <div class="container-fluid">
                     <div class="row">
@@ -39,7 +12,7 @@
                                             </li>
                                             <li><a href="{{ route('admin.hotel.index') }}">Quản lý khách sạn</a> <span class="bread-slash">/</span>
                                             </li>
-                                            <li><span class="bread-blod">Thêm khách sạn</span>
+                                            <li><span class="bread-blod">Thêm kiểu khách sạn</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -57,7 +30,7 @@
                         <div class="sparkline12-list">
                             <div class="sparkline12-hd">
                                 <div class="main-sparkline12-hd">
-                                    <h1>Thêm khách sạn</h1>
+                                    <h1>Thêm kiểu khách sạn</h1>
                                 </div>
                             </div>
         @if ($errors->any())
@@ -74,12 +47,12 @@
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div class="all-form-element-inner">
-                                                <form action="{{ route('admin.hotel.add') }}" method="post" enctype="multipart/form-data">
+                                                <form action="{{ route('admin.type.add', $id) }}" method="post" enctype="multipart/form-data">
                                                     {{ csrf_field() }}
                                                     <div class="form-group-inner">
                                                         <div class="row">
                                                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Tên khách sạn</label>
+                                                                <label class="login2 pull-right pull-right-pro">Tên phòng</label>
                                                             </div>
                                                             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                                                 <input type="text" class="form-control" name="name">
@@ -99,30 +72,10 @@
                                                     <div class="form-group-inner">
                                                         <div class="row">
                                                             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Keywords</label>
+                                                                <label class="login2 pull-right pull-right-pro">Kiểu phòng(Đơn/đôi):</label>
                                                             </div>
                                                             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <input type="text" class="form-control" name="keywords">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Mô tả</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <input type="text" class="form-control" name="description">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Chi tiết</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                                <textarea style="width: 100%;border: 1px solid #ddd" rows="10" name="detail" id="editor1"></textarea>
+                                                                <input type="text" class="form-control" name="type">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -133,19 +86,6 @@
                                                             </div>
                                                             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                                                                 <input type="file" class="form-control" name="picture">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group-inner">
-                                                        <div class="row">
-                                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                                <label class="login2 pull-right pull-right-pro">Album ảnh</label>
-                                                            </div>
-                                                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                                                            <div class="field" align="left">
-                                                              <input type="file" id="files" name="files[]" multiple />
-                                                            </div>
-                                                          </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -169,40 +109,4 @@
                 </div>
             </div>
         </div>
-<script src="/templates/admin/js/jquery.min.js"></script> 
-  <script type="text/javascript">
-    $(document).ready(function() {
-      if (window.File && window.FileList && window.FileReader) {
-        $("#files").on("change", function(e) {
-          var files = e.target.files,
-            filesLength = files.length;
-          for (var i = 0; i < filesLength; i++) {
-            var f = files[i]
-            var fileReader = new FileReader();
-            fileReader.onload = (function(e) {
-              var file = e.target;
-              $("<span class=\"pip\">" +
-                "<img class=\"imageThumb\" width='100px' src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-                "<br/><span class=\"remove\">Remove image</span>" +
-                "</span>").insertAfter("#files");
-              $(".remove").click(function(){
-                $(this).parent(".pip").remove();
-              });
-              
-              // Old code here
-              /*$("<img></img>", {
-                class: "imageThumb",
-                src: e.target.result,
-                title: file.name + " | Click to remove"
-              }).insertAfter("#files").click(function(){$(this).remove();});*/
-              
-            });
-            fileReader.readAsDataURL(f);
-          }
-        });
-      } else {
-        alert("Your browser doesn't support to File API")
-      }
-    });
-</script>
 @stop
